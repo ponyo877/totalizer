@@ -1,7 +1,8 @@
 import type { ButtonOptions } from '@pixi/ui';
 import { FancyButton } from '@pixi/ui';
 import type { TextStyle } from 'pixi.js';
-import { Text } from 'pixi.js';
+import { Graphics, Text } from 'pixi.js';
+import { DropShadowFilter } from 'pixi-filters';
 
 import { sfx } from '../../audio';
 
@@ -18,7 +19,7 @@ export interface PrimaryButtonOptions {
 }
 
 /** Constant to define the default scale of the button */
-const DEFAULT_SCALE = 0.6;
+const DEFAULT_SCALE = 1;
 
 export class PrimaryButton extends FancyButton {
     /**
@@ -30,30 +31,38 @@ export class PrimaryButton extends FancyButton {
             text: options?.text ?? '',
             style: {
                 // Predefine text styles that can be overwritten
-                fill: 0x49c8ff,
+                fill: 0x000000,
                 fontFamily: 'Andika Regular',
-                fontWeight: 'bold',
                 align: 'center',
-                fontSize: 40,
+                fontSize: 30,
                 // Allow custom text style to overwrite predefined options
                 ...options?.textStyle,
             },
         });
 
+        let buttonGraphics = new Graphics().roundRect(0, 0, 260, 88, 15).fill(0xFFFFFF);
+        let shadow = new DropShadowFilter();
+        // shadow.shadowOnly = true;
+        // shadow.blur = 5;
+        shadow.alpha = 0.25;
+        // shadow.color = 0x000000;
+        shadow.resolution = 100;
+        buttonGraphics.filters = [shadow];
         super({
             // Assign the default view
-            defaultView: 'play-btn-up',
+            // shadow drop
+            defaultView: buttonGraphics,
             // Assign the pressed view
-            pressedView: 'play-btn-down',
+            pressedView: new Graphics().roundRect(0, 0, 260, 88, 15).fill(0xFFFFFF),
             // Assign button text
             text,
             // Offset the button text
             textOffset: {
                 default: {
-                    y: -30,
+                    y: 0,
                 },
                 pressed: {
-                    y: -15,
+                    y: 10,
                 },
             },
             // Anchor to the center-bottom

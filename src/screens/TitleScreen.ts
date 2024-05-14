@@ -8,6 +8,7 @@ import { PrimaryButton } from '../ui/buttons/PrimaryButton';
 import { Title } from '../ui/Title';
 import { i18n } from '../utils/i18n';
 import { LoadScreen } from './LoadScreen';
+import { MeltingFace } from '../ui/MeltingFace';
 
 /** The screen presented at the start, after loading. */
 export class TitleScreen extends Container implements AppScreen {
@@ -20,7 +21,9 @@ export class TitleScreen extends Container implements AppScreen {
     private readonly _background: TilingSprite;
 
     private _title!: Title;
-    private _playBtn!: PrimaryButton;
+    private _meltingFace!: MeltingFace;
+    private _singleBtn!: PrimaryButton;
+    private _multiBtn!: PrimaryButton;
     /** A container to group visual elements for easier animation */
     private _topAnimContainer = new Container();
     /** A container to group visual elements for easier animation */
@@ -33,7 +36,6 @@ export class TitleScreen extends Container implements AppScreen {
 
         // Create the background
         this._background = new TilingSprite({
-            texture: Texture.from('background-tile'),
             width: 64,
             height: 64,
             tileScale: {
@@ -57,9 +59,9 @@ export class TitleScreen extends Container implements AppScreen {
     /** Called before `show` function, can receive `data` */
     public prepare() {
         // Reset the positions of the group containers
-        gsap.set(this._topAnimContainer, { y: -350 });
+        gsap.set(this._topAnimContainer, { y: 0 });
         gsap.set(this._midAnimContainer, { x: 200 });
-        gsap.set(this._bottomAnimContainer, { y: 350 });
+        gsap.set(this._bottomAnimContainer, { y: 0 });
     }
 
     /** Called when the screen is being shown. */
@@ -109,14 +111,25 @@ export class TitleScreen extends Container implements AppScreen {
         // Set visuals to their respective locations
 
         this._title.view.x = w * 0.5;
-        this._title.view.y = 145;
+        this._title.view.y = 191*2 ;
 
-        this._playBtn.x = w * 0.5;
-        this._playBtn.y = h - this._playBtn.height / 2 + 10;
+        this._meltingFace.view.x = w * 0.5;
+        this._meltingFace.view.y = 232*2;
+
+        this._singleBtn.x = w * 0.5;
+        this._singleBtn.y = 600;
+
+        this._multiBtn.x = w * 0.5;
+        this._multiBtn.y = 750;
     }
 
     /** Add visual details to title screen. */
     private _buildDetails() {
+        this._meltingFace = new MeltingFace();
+        this._meltingFace.view.scale.set(0.75);
+        this._meltingFace.view.alpha = 0.1;
+        this._topAnimContainer.addChild(this._meltingFace.view);
+
         // Add the title card
         this._title = new Title();
         this._topAnimContainer.addChild(this._title.view);
@@ -124,15 +137,26 @@ export class TitleScreen extends Container implements AppScreen {
 
     /** Add buttons to screen. */
     private _buildButtons() {
-        this._playBtn = new PrimaryButton({
-            text: i18n.t('titlePlay'),
+        this._singleBtn = new PrimaryButton({
+            text: i18n.t('singlePlay'),
         });
 
-        this._playBtn.onPress.connect(() => {
+        this._singleBtn.onPress.connect(() => {
             // Go to game screen when user presses play button
             navigation.goToScreen(LoadScreen);
         });
 
-        this._bottomAnimContainer.addChild(this._playBtn);
+        this._bottomAnimContainer.addChild(this._singleBtn);
+
+        this._multiBtn = new PrimaryButton({
+            text: i18n.t('multiPlay'),
+        });
+
+        this._multiBtn.onPress.connect(() => {
+            // Go to game screen when user presses play button
+            navigation.goToScreen(LoadScreen);
+        });
+
+        this._bottomAnimContainer.addChild(this._multiBtn);
     }
 }

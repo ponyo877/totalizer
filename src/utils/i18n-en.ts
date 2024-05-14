@@ -26,4 +26,6 @@ export const i18nDict = {
 
     mainTitle: 'totalizer',
     subTitle: 'YES/NOアンケート',
+    singlePlay: '1台で',
+    multiPlay: 'みんなで',
 };

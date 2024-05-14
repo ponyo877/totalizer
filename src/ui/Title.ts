@@ -20,8 +20,11 @@ export class Title {
             text: mainTitleText,
             style: {
                 fontSize: 90,
-                fontWeight: '900',
                 fontFamily: 'Andika Regular',
+                stroke: {
+                    width: 5,
+                    color: 0xFFFFFF,
+                },
             },
         });
 
@@ -34,8 +37,11 @@ export class Title {
             text: i18n.t('subTitle'),
             style: {
                 fontSize: 32,
-                fontWeight: '900',
                 fontFamily: 'Andika Regular',
+                stroke: {
+                    width: 5,
+                    color: 0xFFFFFF,
+                },
             },
         });
 
