@@ -1,6 +1,6 @@
 import type { ButtonOptions } from '@pixi/ui';
 import { FancyButton } from '@pixi/ui';
-import type { TextStyle } from 'pixi.js';
+import type { Container, TextStyle, ColorSource } from 'pixi.js';
 import { Graphics, Text } from 'pixi.js';
 import { DropShadowFilter } from 'pixi-filters';
 
@@ -10,8 +10,10 @@ import { sfx } from '../../audio';
  * Options for the primary button.
  */
 export interface PrimaryButtonOptions {
+    icon?: Container;
     /** The text displayed on the button. */
     text: string;
+    backgroundColor?: ColorSource;
     /** Style properties for the text displayed on the button. */
     textStyle?: Partial<TextStyle>;
     /** Options for the underlying button component. */
@@ -31,7 +33,6 @@ export class PrimaryButton extends FancyButton {
             text: options?.text ?? '',
             style: {
                 // Predefine text styles that can be overwritten
-                fill: 0x000000,
                 fontFamily: 'Andika Regular',
                 align: 'center',
                 fontSize: 30,
@@ -40,21 +41,22 @@ export class PrimaryButton extends FancyButton {
             },
         });
 
-        let buttonGraphics = new Graphics().roundRect(0, 0, 260, 88, 15).fill(0xFFFFFF);
+        let buttonGraphics = new Graphics().roundRect(0, 0, 260, 88, 15).fill(options?.backgroundColor ?? 0xFFFFFF);
         let shadow = new DropShadowFilter();
-        // shadow.shadowOnly = true;
-        // shadow.blur = 5;
         shadow.alpha = 0.25;
-        // shadow.color = 0x000000;
         shadow.resolution = 100;
         buttonGraphics.filters = [shadow];
         super({
             // Assign the default view
-            // shadow drop
             defaultView: buttonGraphics,
             // Assign the pressed view
             pressedView: new Graphics().roundRect(0, 0, 260, 88, 15).fill(0xFFFFFF),
             // Assign button text
+            icon : options.icon,
+            iconOffset: {
+                x: 0,
+                y: 0,
+            },
             text,
             // Offset the button text
             textOffset: {

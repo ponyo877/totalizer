@@ -22,7 +22,7 @@ export class Title {
                 fontSize: 90,
                 fontFamily: 'Andika Regular',
                 stroke: {
-                    width: 5,
+                    width: 10,
                     color: 0xFFFFFF,
                 },
             },

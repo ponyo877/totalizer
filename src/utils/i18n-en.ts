@@ -28,4 +28,6 @@ export const i18nDict = {
     subTitle: 'YES/NOアンケート',
     singlePlay: '1台で',
     multiPlay: 'みんなで',
+    yes: 'YES',
+    no: 'NO',
 };

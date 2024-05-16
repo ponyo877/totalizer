@@ -1,5 +1,5 @@
 import gsap from 'gsap';
-import { Container, Assets, Sprite, TilingSprite } from 'pixi.js';
+import { Container, TilingSprite } from 'pixi.js';
 
 import { designConfig } from '../game/designConfig';
 import type { AppScreen } from '../navigation';
@@ -7,13 +7,13 @@ import { navigation } from '../navigation';
 import { PrimaryButton } from '../ui/buttons/PrimaryButton';
 import { Title } from '../ui/Title';
 import { i18n } from '../utils/i18n';
-import { QuestionScreen } from './QuestionScreen';
+import { LoadScreen } from './LoadScreen';
 import { MeltingFace } from '../ui/MeltingFace';
 
 /** The screen presented at the start, after loading. */
-export class TitleScreen extends Container implements AppScreen {
+export class QuestionScreen extends Container implements AppScreen {
     /** A unique identifier for the screen */
-    public static SCREEN_ID = 'title';
+    public static SCREEN_ID = 'question';
     /** An array of bundle IDs for dynamic asset loading. */
     public static assetBundles = ['images/title-screen'];
 
@@ -137,53 +137,31 @@ export class TitleScreen extends Container implements AppScreen {
 
     /** Add buttons to screen. */
     private _buildButtons() {
-        let iconContainer = new Container();
-        let icon = Sprite.from('single-player');
-        
-        icon.scale.set(27/icon.width);
-        icon.alpha = 0.5;
-        icon.x = 0;
-        let arrow = Sprite.from('arrow');
-        arrow.scale.set(27/arrow.width);
-        arrow.alpha = 0.5;
-        arrow.x = 200;
-        iconContainer.addChild(icon, arrow);
         this._singleBtn = new PrimaryButton({
-            icon: iconContainer,
-            text: i18n.t('singlePlay'),
+            text: i18n.t('yes'),
             textStyle: {
-                fill: 0x000000,
+                fill: 0xFFFFFF,
             },
+            backgroundColor: 0x019F6C,
         });
 
         this._singleBtn.onPress.connect(() => {
             // Go to game screen when user presses play button
-            navigation.goToScreen(QuestionScreen);
+            navigation.goToScreen(LoadScreen);
         });
 
         this._bottomAnimContainer.addChild(this._singleBtn);
-        iconContainer = new Container();
-        icon = Sprite.from('multi-player');
-        icon.scale.set(27/icon.width);
-        icon.alpha = 0.5;
-        icon.x = 0;
-
-        arrow = Sprite.from('arrow');
-        arrow.scale.set(27/arrow.width);
-        arrow.alpha = 0.5;
-        arrow.x = 200;
-        iconContainer.addChild(icon, arrow);
         this._multiBtn = new PrimaryButton({
-            icon: iconContainer,
-            text: i18n.t('multiPlay'),
+            text: i18n.t('no'),
             textStyle: {
-                fill: 0x000000,
+                fill: 0xFFFFFF,
             },
+            backgroundColor: 0xE03939,
         });
 
         this._multiBtn.onPress.connect(() => {
             // Go to game screen when user presses play button
-            navigation.goToScreen(QuestionScreen);
+            navigation.goToScreen(LoadScreen);
         });
 
         this._bottomAnimContainer.addChild(this._multiBtn);
