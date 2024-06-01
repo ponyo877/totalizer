@@ -5,10 +5,10 @@ import { designConfig } from '../game/designConfig';
 import type { AppScreen } from '../navigation';
 import { navigation } from '../navigation';
 import { PrimaryButton } from '../ui/buttons/PrimaryButton';
-import { Title } from '../ui/Title';
+import { InputField } from '../ui/InputField';
 import { i18n } from '../utils/i18n';
 import { LoadScreen } from './LoadScreen';
-import { MeltingFace } from '../ui/MeltingFace';
+// import { MeltingFace } from '../ui/MeltingFace';
 
 /** The screen presented at the start, after loading. */
 export class QuestionScreen extends Container implements AppScreen {
@@ -20,10 +20,11 @@ export class QuestionScreen extends Container implements AppScreen {
     /** A background visual element */
     private readonly _background: TilingSprite;
 
-    private _title!: Title;
-    private _meltingFace!: MeltingFace;
-    private _singleBtn!: PrimaryButton;
-    private _multiBtn!: PrimaryButton;
+    // private _title!: Title;
+    // private _meltingFace!: MeltingFace;
+    private _questionArea!: InputField;
+    private _yesBtn!: PrimaryButton;
+    private _noBtn!: PrimaryButton;
     /** A container to group visual elements for easier animation */
     private _topAnimContainer = new Container();
     /** A container to group visual elements for easier animation */
@@ -110,34 +111,38 @@ export class QuestionScreen extends Container implements AppScreen {
 
         // Set visuals to their respective locations
 
-        this._title.view.x = w * 0.5;
-        this._title.view.y = 234.5;
+        // this._title.view.x = w * 0.5;
+        // this._title.view.y = 234.5;
 
-        this._meltingFace.view.x = w * 0.5;
-        this._meltingFace.view.y = 326.5;
+        // this._meltingFace.view.x = w * 0.5;
+        // this._meltingFace.view.y = 326.5;
 
-        this._singleBtn.x = w * 0.5;
-        this._singleBtn.y = 600;
+        this._questionArea.view.x =  w * 0.5 - this._questionArea.view.width * 0.5;
+        this._questionArea.view.y = 0;
 
-        this._multiBtn.x = w * 0.5;
-        this._multiBtn.y = 750;
+        this._yesBtn.x = w * 0.5;
+        this._yesBtn.y = 600;
+
+        this._noBtn.x = w * 0.5;
+        this._noBtn.y = 750;
     }
 
     /** Add visual details to title screen. */
     private _buildDetails() {
-        this._meltingFace = new MeltingFace();
-        this._meltingFace.view.scale.set(0.75);
-        this._meltingFace.view.alpha = 0.1;
-        this._topAnimContainer.addChild(this._meltingFace.view);
+        // this._meltingFace = new MeltingFace();
+        // this._meltingFace.view.scale.set(0.75);
+        // this._meltingFace.view.alpha = 0.1;
+        // this._topAnimContainer.addChild(this._meltingFace.view);
 
         // Add the title card
-        this._title = new Title();
-        this._topAnimContainer.addChild(this._title.view);
+        // this._title = new Title();
+        this._questionArea = new InputField();
+        this._topAnimContainer.addChild(this._questionArea.view);
     }
 
     /** Add buttons to screen. */
     private _buildButtons() {
-        this._singleBtn = new PrimaryButton({
+        this._yesBtn = new PrimaryButton({
             text: i18n.t('yes'),
             textStyle: {
                 fill: 0xFFFFFF,
@@ -145,13 +150,13 @@ export class QuestionScreen extends Container implements AppScreen {
             backgroundColor: 0x019F6C,
         });
 
-        this._singleBtn.onPress.connect(() => {
+        this._yesBtn.onPress.connect(() => {
             // Go to game screen when user presses play button
             navigation.goToScreen(LoadScreen);
         });
 
-        this._bottomAnimContainer.addChild(this._singleBtn);
-        this._multiBtn = new PrimaryButton({
+        this._bottomAnimContainer.addChild(this._yesBtn);
+        this._noBtn = new PrimaryButton({
             text: i18n.t('no'),
             textStyle: {
                 fill: 0xFFFFFF,
@@ -159,11 +164,11 @@ export class QuestionScreen extends Container implements AppScreen {
             backgroundColor: 0xE03939,
         });
 
-        this._multiBtn.onPress.connect(() => {
+        this._noBtn.onPress.connect(() => {
             // Go to game screen when user presses play button
             navigation.goToScreen(LoadScreen);
         });
 
-        this._bottomAnimContainer.addChild(this._multiBtn);
+        this._bottomAnimContainer.addChild(this._noBtn);
     }
 }
